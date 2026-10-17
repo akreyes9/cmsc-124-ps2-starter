@@ -8,7 +8,7 @@ P06	[NA,12]	integer	2	none
 P07	factor[low,high,low];levels=[low,high]	integer	3	none
 P08	list{scores=[3,5],label=["A"]}	list	2	none
 P09	data.frame[2x2]{id=[1,2],passed=[TRUE,FALSE]}	list	2	2x2
-P10	matrix(11,22,13,24,15,26)	integer	6	2x3
+P10	matrix[2x3](11,22,13,24,15,26)	integer	6	2x3
 P11	[NA]	double	1	none
 P12	[9]	double	1	none
 P13	[1,2.5,3]	double	3	none

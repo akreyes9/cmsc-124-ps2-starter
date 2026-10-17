@@ -38,6 +38,8 @@ Correction: I predicted `data.frame{id=[1,2],passed=["TRUE","FALSE"]}`. R printe
 ## P10
 `matrix(1:6, nrow = 2L)` fills column by column, so 6 values in 2 rows gives 2x3, and `c(10L, 20L)` is recycled down each column. Integer plus integer stays integer, and the length counts all 6 cells. I expect the value to be written as `matrix(...)` with the cells in column order.
 
+Correction: I predicted `matrix(11,22,13,24,15,26)`. R printed `matrix[2x3](11,22,13,24,15,26)`. The cells were right, but I forgot that a matrix value includes its shape in brackets before the cells.
+
 ## P11
 `mean()` returns `NA` when any input is `NA` unless `na.rm = TRUE`, and the result is a double of length 1 with no `dim`.
 
