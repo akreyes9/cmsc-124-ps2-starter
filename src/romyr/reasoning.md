@@ -55,5 +55,7 @@ Assigning a double into an integer vector promotes the whole vector to double, s
 ## P15
 `array()` with `dim = c(2L, 2L, 2L)` places the 8 integers in column order across a 2x2x2 shape, so the type is integer and the length is 8. I expect the value to be written as `array(...)` with the cells in column order.
 
+Correction: I predicted `array(1,2,3,4,5,6,7,8)`. R printed `array[2x2x2](1,2,3,4,5,6,7,8)`. Same miss as P10: an array value includes its shape in brackets before the cells.
+
 ## P16
 Index `0` matches no position, so the result is an empty integer vector with length 0 and no `dim`. I expect the value to still show 4, the first element.
