@@ -6,6 +6,8 @@
 ## P02
 The string `"2"` makes `c()` coerce the result to character, giving length 3 with no `dim`. I expect only the element that started as a string to be written in quotes, while `1L` and `TRUE` keep their original form.
 
+Correction: I predicted `[1,"2",TRUE]`, thinking only the `"2"` would be quoted. R printed `["1","2","TRUE"]` because once one element is character, `c()` turns every element into a string, including `1L` and `TRUE`.
+
 ## P03
 Arithmetic is element-wise and recycles the shorter vector, so `c(1L, 2L)` repeats to `1,2,1,2` and the sums are 11, 22, 31, 42. Integer plus integer stays integer, the length matches the longer vector (4), and there is no `dim`.
 

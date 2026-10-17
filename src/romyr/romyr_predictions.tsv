@@ -1,6 +1,6 @@
 id	value	type	length	dim
 P01	[1,2,3.5]	double	3	none
-P02	[1,"2",TRUE]	character	3	none
+P02	["1","2","TRUE"]	character	3	none
 P03	[11,22,31,42]	integer	4	none
 P04	[third=9,first=8]	integer	2	none
 P05	[4,7]	integer	2	none
