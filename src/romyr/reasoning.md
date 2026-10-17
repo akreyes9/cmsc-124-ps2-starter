@@ -33,6 +33,8 @@ A list keeps each element with its own type and name, so `scores` stays an integ
 ## P09
 A data frame is a list of equal-length columns, so `typeof` is list, length is the number of columns (2), and `dim` is rows x columns (2x2). I expect the value to list each column by name without the size, with the logical column written as the strings `"TRUE"` and `"FALSE"`.
 
+Correction: I predicted `data.frame{id=[1,2],passed=["TRUE","FALSE"]}`. R printed `data.frame[2x2]{id=[1,2],passed=[TRUE,FALSE]}`. I missed two things: the value carries the rows x columns size, and each column keeps its own type, so `passed` stays logical instead of turning into strings.
+
 ## P10
 `matrix(1:6, nrow = 2L)` fills column by column, so 6 values in 2 rows gives 2x3, and `c(10L, 20L)` is recycled down each column. Integer plus integer stays integer, and the length counts all 6 cells. I expect the value to be written as `matrix(...)` with the cells in column order.
 
