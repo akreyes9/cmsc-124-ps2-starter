@@ -25,6 +25,8 @@ A logical index keeps the positions where it is `TRUE`. `is.na(x) | x > 10L` is 
 ## P07
 A factor stores integer codes pointing into its levels, so `typeof` is integer and the length is the 3 data values, with no `dim`. I expect the labels and levels to be written as the quoted strings they came from, with the labels in data order and the levels in the given `levels` order.
 
+Correction: I predicted `factor["low","high","low"];levels=["low","high"]` with each label in quotes. R printed `factor[low,high,low];levels=[low,high]` because a factor's labels and levels are written as bare level names, not as quoted strings.
+
 ## P08
 A list keeps each element with its own type and name, so `scores` stays an integer vector and `label` a character vector. Length counts the 2 top-level elements, and a list has no `dim`.
 
