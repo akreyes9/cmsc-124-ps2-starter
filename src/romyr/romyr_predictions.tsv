@@ -3,7 +3,7 @@ P01	[1,2,3.5]	double	3	none
 P02	["1","2","TRUE"]	character	3	none
 P03	[11,22,31,42]	integer	4	none
 P04	[third=9,first=8]	integer	2	none
-P05	[4,7]	integer	2	none
+P05	[4,9]	integer	2	none
 P06	[NA,12]	integer	2	none
 P07	factor["low","high","low"];levels=["low","high"]	integer	3	none
 P08	list{scores=[3,5],label=["A"]}	list	2	none

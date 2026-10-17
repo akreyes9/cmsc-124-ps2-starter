@@ -17,6 +17,8 @@ A positive integer index selects elements in the order given and keeps their nam
 ## P05
 A negative index drops that position, so `[-2L]` removes the 7 and keeps 4 and 9 as an integer vector of length 2 with no `dim`.
 
+Correction: I predicted `[4,7]`. R printed `[4,9]` because `[-2L]` drops the second element, the 7, so 4 and 9 are left. My reasoning said this, but I wrote the wrong number in the table.
+
 ## P06
 A logical index keeps the positions where it is `TRUE`. `is.na(x) | x > 10L` is `F,T,T,F`, because `TRUE | NA` is `TRUE`, so NA and 12 are kept. The type stays integer, length 2, no `dim`.
 
