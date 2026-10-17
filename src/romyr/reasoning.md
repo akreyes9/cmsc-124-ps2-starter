@@ -59,3 +59,5 @@ Correction: I predicted `array(1,2,3,4,5,6,7,8)`. R printed `array[2x2x2](1,2,3,
 
 ## P16
 Index `0` matches no position, so the result is an empty integer vector with length 0 and no `dim`. I expect the value to still show 4, the first element.
+
+Correction: I predicted `[4]`, thinking index `0` would fall back to the first element. R printed `[]` because index `0` matches no position, so nothing is selected, which my own length of 0 already said.
