@@ -58,7 +58,15 @@ clean_scores_vector <- function(scores) {
 # names attached. Accumulating into a fresh vector with out <- c(out, value)
 # drops them, and the check compares with identical(), which notices.
 clean_scores_scalar <- function(scores) {
-    stop("TODO: implement clean_scores_scalar()")
+    out <- setNames(as.double(scores), names(scores))
+    for (i in seq_along(out)) {
+        if (is.na(out[[i]])) {
+            out[[i]] <- 0
+        } else {
+            out[[i]] <- min(2 * out[[i]], 20)
+        }
+    }
+    out
 }
 
 # build_roster(student_names, groups, scores)
@@ -90,9 +98,16 @@ clean_scores_scalar <- function(scores) {
 # order. factor(groups, levels = unique(groups)) keeps first-appearance order.
 # unname() is what strips the names off the two score columns.
 build_roster <- function(student_names, groups, scores) {
-    stop("TODO: implement build_roster()")
+    adjusted <- clean_scores_vector(scores)
+    data.frame(
+        name = student_names,
+        group = factor(groups, levels = unique(groups)),
+        raw_score = unname(scores),
+        adjusted_score = unname(adjusted),
+        passed = unname(adjusted) >= 12,
+        stringsAsFactors = FALSE
+    )
 }
-
 # summarize_roster(roster)
 #
 # roster:  a data frame built by build_roster().
