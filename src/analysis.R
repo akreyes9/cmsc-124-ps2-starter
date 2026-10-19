@@ -29,7 +29,11 @@
 # <-, replaces exactly the elements it marks and leaves the names attached. That
 # is the subassignment the constraint is asking for.
 clean_scores_vector <- function(scores) {
-    stop("TODO: implement clean_scores_vector()")
+    # stop("TODO: implement clean_scores_vector()")
+
+    out <- pmin(2 * scores, 20)  # pmin for not just one comparison but whole elements
+    out[is.na(out)] <- 0
+    out 
 }
 
 # clean_scores_scalar(scores)
@@ -54,7 +58,15 @@ clean_scores_vector <- function(scores) {
 # names attached. Accumulating into a fresh vector with out <- c(out, value)
 # drops them, and the check compares with identical(), which notices.
 clean_scores_scalar <- function(scores) {
-    stop("TODO: implement clean_scores_scalar()")
+    out <- setNames(as.double(scores), names(scores))
+    for (i in seq_along(out)) {
+        if (is.na(out[[i]])) {
+            out[[i]] <- 0
+        } else {
+            out[[i]] <- min(2 * out[[i]], 20)
+        }
+    }
+    out
 }
 
 # build_roster(student_names, groups, scores)
@@ -86,7 +98,15 @@ clean_scores_scalar <- function(scores) {
 # order. factor(groups, levels = unique(groups)) keeps first-appearance order.
 # unname() is what strips the names off the two score columns.
 build_roster <- function(student_names, groups, scores) {
-    stop("TODO: implement build_roster()")
+    adjusted <- clean_scores_vector(scores)
+    data.frame(
+        name = student_names,
+        group = factor(groups, levels = unique(groups)),
+        raw_score = unname(scores),
+        adjusted_score = unname(adjusted),
+        passed = unname(adjusted) >= 12,
+        stringsAsFactors = FALSE
+    )
 }
 
 # summarize_roster(roster)
@@ -119,5 +139,17 @@ build_roster <- function(student_names, groups, scores) {
 # split() can divide adjusted_score by every factor level. vapply() can then
 # compute one mean for each part and return a named vector with no dimensions.
 summarize_roster <- function(roster) {
-    stop("TODO: implement summarize_roster()")
+    # stop("TODO: implement summarize_roster()")
+
+    list(
+        rows = nrow(roster),
+        missing_raw = sum(is.na(roster$raw_score)),
+        mean_adjusted = mean(roster$adjusted_score),
+        passed = roster$name[roster$passed],
+        mean_by_group = vapply(split(roster$adjusted_score, roster$group), mean, numeric(1))
+        # split for combining all the adjusted score values by group
+        # vapply for every group -> compute mean and then it needs to be a double
+    )
+
+    
 }
