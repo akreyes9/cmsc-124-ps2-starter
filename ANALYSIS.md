@@ -23,7 +23,15 @@
 
 
 ### Tracing for clean_scores_scalar
-- TBD
+
+| Step | Expression | Result |
+|------|------------|--------|
+| start | `out <- setNames(as.double(scores), names(scores))` | test1 = 8, test2 = NA, test3 = 12, test4 = 4 |
+| i = 1 | `is.na(out[[1]])` is FALSE, so `out[[1]] <- min(2 * 8, 20)` | 16 |
+| i = 2 | `is.na(out[[2]])` is TRUE, so `out[[2]] <- 0` | 0 |
+| i = 3 | `is.na(out[[3]])` is FALSE, so `out[[3]] <- min(2 * 12, 20)` | 20 |
+| i = 4 | `is.na(out[[4]])` is FALSE, so `out[[4]] <- min(2 * 4, 20)` | 8 |
+| end | `out` | 16, 0, 20, 8 |
 
 
 ### Comparison
@@ -34,22 +42,25 @@
 
 
 - For the scalar
-  - TBD
+  - one element per pass, and each pass changes only `out[[i]]`
+  - conditional used: `if (is.na(out[[i]]))` decides between writing 0 and `min(2 * out[[i]], 20)`
+  - loop index (`i`) is used to pick what element to overwrite
 
 
+### Evaluation Order
+- Within one pass, `is.na(out[[i]])` is checked first. If TRUE, `out[[i]] <- 0` runs and the arithmetic `min(2 * out[[i]], 20)` is skipped, so test2 is never doubled or capped
+- Across passes, `i` goes 1 to 4, so test1 is finished before test2 is touched
+- In the vector version, `pmin()` runs with the NA still in place and `out[is.na(out)] <- 0` repairs it afterward
 
-### Where recycling would change the answer
-- Recycling -> conbines two vectors of different lengths in which it repeats the shorter one to match the longer one
 
-- So it happens harmlessly in these situation
-    - 2 * scores: the 2 is recycled into 2 2 2 2.
-    - pmin(x, 20): the 20 is recycled into 20 20 20 20.
-
-- Where it can change the answer
-    - pmin(c(test1 = 16, test2 = 30, test3 = 24, test4 = 18), c(20, 10))
-        - caps:   20  10  20  10
-        - result: 16  10  20  10
+### Recycling
+- Recycling repeats the shorter vector to match the longer one
+- Harmless: in `2 * scores` and `pmin(..., 20)` the single numbers 2 and 20 are repeated to length 4
+- Harmful: `pmin(c(test1 = 16, test2 = 30, test3 = 24, test4 = 18), c(20, 10))`
+  - caps become 20, 10, 20, 10, so the result is 16, 10, 20, 10
+  - intended result is 16, 20, 20, 18
+  - R gives no warning, since 4 is a multiple of 2
 
 
 ### Which one to keep
-- keep the vectoriezed version because it is shorter and more is a much more idiomatic. It is also much more versatile and faster since it hands the whole vector to R's compiled C code, which loops over the elements with almost no per-element cost while the scalar runs the loop in the R interpreter so each set of passes repeats the full call. As time goes on those call adds up and affects the speed of the program. That is a good trade-off for using more memory for it, we replaced speed with memory 
+- keep the vectoriezed version because it is shorter and more is a much more idiomatic. It is also much more versatile and faster since it hands the whole vector to R's compiled C code, which loops over the elements with almost no per-element cost while the scalar runs the loop in the R interpreter so each set of passes repeats the full call. As time goes on those call adds up and affects the speed of the program. That is a good trade-off for using more memory for it, we replaced speed with memory
